@@ -139,6 +139,12 @@ body[data-tab=cal] .fab{display:none}
 .it .sub{display:block;font-size:11px;font-weight:800;color:var(--soon);margin-top:3px}
 .wsub{display:flex;gap:8px;margin-top:8px}.wsub .b{padding:12px 6px}
 .dot.s{background:var(--sand);color:var(--mut)}.dot.z{background:rgba(224,160,40,.2);color:var(--soon)}.dot svg{stroke-linecap:round}
+/* sync indicator (same as Zhou Menu) + sync section */
+#ver{opacity:.85;transition:transform .2s,opacity .2s}#ver.hold{transform:scale(1.5);opacity:1;transition:transform .7s linear,opacity .7s linear}footer span#vt{padding:0;pointer-events:none;display:inline}
+#dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:7px;vertical-align:middle;background:var(--mut);transition:background .3s}
+#dot[data-s=ok]{background:var(--g)}#dot[data-s=sync]{background:#E0A63A;animation:pulse 1s infinite}#dot[data-s=off]{background:#D2625A}#dot[data-s=none]{display:none}@keyframes pulse{50%{opacity:.35}}
+.acc{border-radius:14px;background:var(--bg);overflow:hidden}.ah{width:100%;display:flex;justify-content:space-between;align-items:center;background:none;color:var(--ink);padding:12px;font-weight:700;font-size:13.5px;text-align:left;border-radius:0}.ah small{margin-left:8px;color:var(--mut);font-weight:600;font-size:12px}.ah svg{width:18px;height:18px;flex:none;transition:transform .3s}.acc.open .ah svg{transform:rotate(180deg)}
+.ax{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.2,.8,.2,1)}.acc.open .ax{grid-template-rows:1fr}.ai{overflow:hidden;min-height:0;padding:0 12px}.acc.open .ai{padding-bottom:12px}.ai p{margin:0 0 8px;color:var(--mut);font-size:12.5px;font-weight:600;line-height:1.4}
 /* What's new pop-up */
 .pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:50;background:rgba(0,0,0,.38);padding:22px}.pop.on{display:flex}
 .pc{background:var(--card);border-radius:24px;width:100%;max-width:330px;max-height:74vh;overflow:auto;padding:16px 18px 18px;box-shadow:0 24px 60px rgba(0,0,0,.4);animation:pp .2s cubic-bezier(.2,.9,.3,1.15)}
@@ -155,10 +161,10 @@ body[data-tab=cal] .fab{display:none}
 </style>
 </head>
 <body>
-<main><header><div class="hl"><h1>Leafy</h1><button class="sd" id="sd" aria-label="Sync status"><i></i></button></div><div class="hr2" id="hr"><div class="chip" id="chip"></div><div class="seg" id="seg"><button data-v="water" aria-label="Group by watering"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c3.6 4.4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 2.4-6.6 6-11z"/></svg></button><button data-v="light" aria-label="Group by light"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" stroke="none"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" fill="none" stroke-width="2"/></svg></button></div></div></header><div class="pager" id="pager"><div class="pane" id="p0"><div id="list"></div></div><div class="pane off" id="p1"><div id="cal"></div></div></div></main>
+<main><header><h1>Leafy</h1><div class="hr2" id="hr"><div class="chip" id="chip"></div><div class="seg" id="seg"><button data-v="water" aria-label="Group by watering"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c3.6 4.4 6 7.5 6 11a6 6 0 0 1-12 0c0-3.5 2.4-6.6 6-11z"/></svg></button><button data-v="light" aria-label="Group by light"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" stroke="none"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" fill="none" stroke-width="2"/></svg></button></div></div></header><div class="pager" id="pager"><div class="pane" id="p0"><div id="list"></div></div><div class="pane off" id="p1"><div id="cal"></div></div></div></main>
 <button class="fab" id="add" aria-label="Add plant"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
 <nav class="dock"><span class="ind"></span><button data-t="plants" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14M5 19l7-7"/></svg>Plants</button><button data-t="cal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Calendar</button></nav>
-<footer><span id="ver">v3.5.0</span></footer>
+<footer><span id="ver"><span id="vt">v3.6.0</span><i id="dot" data-s="none"></i></span></footer>
 <div class="toast" id="toast"></div>
 <div class="pop" id="dlg"><div class="pc"><div class="ph"><b id="dlt"></b></div><p id="dlm"></p><div class="dbtns" id="dlb"></div></div></div>
 <div class="pop" id="dp"><div class="pc"><div class="ph"><div><b id="dpt"></b><small id="dps"></small></div></div><div id="dpl" style="margin-top:8px"></div></div></div>
@@ -166,21 +172,22 @@ body[data-tab=cal] .fab{display:none}
 <div class="ov" id="lib"><div class="sheet" id="libs"></div></div>
 <div class="pop" id="wn"><div class="pc">
 <div class="ph"><div><b>What’s new</b><small id="rel"></small></div><button class="icon" id="thm" aria-label="Toggle dark or light mode"></button></div>
+<h3>v3.6.0</h3>
+<ul><li>Sync status dot beside the version number, same as Zhou Menu</li><li>Sync rebuilt to work with a plain Apps Script link, with clear error messages and an invite link</li></ul>
 <h3>v3.5.0</h3>
 <ul><li>Snooze and Skip a watering</li><li>Seasonal watering adjustment</li><li>Smoother swipe-down on profiles</li><li>In-app dialogs, bigger tap targets, even dashboard tiles</li><li>Sync status dot, light vibration feedback, welcome screen and first-use tip</li></ul>
-<h3>v3.4.0</h3>
-<ul><li>Redesigned plant profile: bigger picture, everything on one clean screen, ring countdown and a watering timeline</li><li>Swipe left or right to switch between Plants and Calendar</li><li>Smooth sliding tab indicator</li></ul>
 <div class="hr"></div>
 <h3 style="margin-top:0">Seasonal watering</h3>
 <label class="sw2" style="margin-top:6px"><span>Adjust intervals for the season</span><span class="tg"><input type="checkbox" id="sea"><i></i></span></label>
 <div class="row"><button class="soft" id="hS">Southern</button><button class="soft" id="hN">Northern</button></div>
 <div class="sm" id="seaTxt"></div>
 <div class="hr"></div>
-<h3 style="margin-top:0">Sheet sync</h3>
-<input id="surl" placeholder="Paste your Apps Script link" autocomplete="off" autocapitalize="off" spellcheck="false">
-<div class="row"><button id="ssv">Save &amp; sync</button><button class="soft" id="snw">Sync now</button></div>
-<div class="sm" id="ss"></div>
-<div class="row"><button class="soft" id="bk">Backup</button><button class="soft" id="rs">Restore</button></div>
+<div class="acc" id="syw"><button class="ah" id="syb"><span>Google Sheets sync<small id="ss"></small></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+<div class="ax"><div class="ai"><p>Paste your Apps Script web app URL. Share the invite link so both phones use the same sheet.</p>
+<input id="surl" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off" autocapitalize="off" spellcheck="false">
+<div class="row"><button id="connect">Connect</button><button class="soft" id="invite">Copy invite link</button></div><div class="row"><button class="soft" id="disc">Disconnect</button></div><div class="sm" id="smsg"></div></div></div></div>
+<h3>Backup</h3><div class="sm" id="bki" style="margin:0 0 4px"></div>
+<div class="row"><button class="soft" id="bk">Back up</button><button class="soft" id="rs">Restore</button></div>
 <input class="vh" type="file" id="rf" accept=".json,application/json">
 </div></div>
 <script>
@@ -211,7 +218,7 @@ const DROP='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c3.6 4.
 let plants=ld('leafy.plants',[]);
 let meta=Object.assign({tomb:{},ltomb:{},rev:0,url:'',last:0,sea:true,hemi:'S'},ld('leafy.meta',{}));
 const saveLocal=()=>{sv('leafy.plants',plants);sv('leafy.meta',meta)};
-let syncT;const commit=()=>{saveLocal();clearTimeout(syncT);syncT=setTimeout(()=>sync(false),1500)};
+const commit=()=>{saveLocal();sched()};
 function migrate(list){let ch=false;list.forEach(p=>{
  if(!p.art){p.art=gen(p.name,p.species);delete p.svg;ch=true}
  if(!p.u){p.u=Date.parse(p.added)||0;ch=true}
@@ -418,7 +425,7 @@ function swipeClose(sheet,ov,closeFn){
 }
 swipeClose($('#sheet'),$('#ov'),close);swipeClose($('#libs'),$('#lib'),()=>$('#lib').classList.remove('on'));
 
-/* ---------- sync (edit by edit, remembered deletions) ---------- */
+/* ---------- sync (Google Apps Script link, edit-by-edit merge, remembered deletions) ---------- */
 const mx=(a,b)=>{const o={...a};for(const k in b)o[k]=Math.max(o[k]||0,b[k]);return o};
 function merge(A,B){
  const tomb=mx(A.tomb||{},B.tomb||{}),lt=mx(A.ltomb||{},B.ltomb||{}),map={};
@@ -426,30 +433,46 @@ function merge(A,B){
   const[w,l]=(p.u||0)>=(q.u||0)?[p,q]:[q,p];map[p.id]={...w,log:[...(w.log||[]),...(l.log||[])]}}
  const out=[];for(const id in map){const p=map[id];if((tomb[id]||0)>(p.u||0))continue;const seen={};p.log=p.log.filter(x=>!lt[x.i]&&!seen[x.i]&&(seen[x.i]=1));out.push(p)}
  return{plants:out,tomb,ltomb:lt}}
-const state=()=>({plants,tomb:meta.tomb,ltomb:meta.ltomb});
-const ssay=t=>{const s=$('#ss');if(s)s.textContent=t};
-const dot=s=>{const d=$('#sd');d.classList.toggle('on',!!meta.url);d.classList.remove('ok','busy','err');if(s)d.classList.add(s)};
-$('#sd').onclick=()=>{if(!meta.url){toast('Add your sync link in What’s new');return}sync(true).then(()=>toast($('#ss').textContent||'Synced'))};
-const tm=()=>new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
-let syncing=false;
-async function sync(manual){
- if(!meta.url){dot();if(manual)ssay('Paste your Apps Script link first.');return}
- if(syncing)return;syncing=true;ssay('Syncing…');dot('busy');
+const state=()=>({app:'leafy',plants,tomb:meta.tomb,ltomb:meta.ltomb});
+const sortK=(k,x)=>x&&typeof x=='object'&&!Array.isArray(x)?Object.keys(x).sort().reduce((o,y)=>(o[y]=x[y],o),{}):x;
+const canon=s=>JSON.stringify([[...(s.plants||[])].sort((a,b)=>a.id<b.id?-1:1).map(p=>({...p,log:[...(p.log||[])].sort((x,y)=>x.i<y.i?-1:1)})),s.tomb||{},s.ltomb||{}],sortK);
+const dotEl=$('#dot'),SS={ok:'Connected',sync:'Syncing…',off:'Can’t reach the sheet',none:'Not connected'};
+const st=s=>{const v=meta.url?s:'none';dotEl.dataset.s=v;const t=$('#ss');if(t)t.textContent=SS[v]};
+const ssay=t=>{const s=$('#smsg');if(s)s.textContent=t};
+function explain(m){m=String(m||'');return /^HTTP/.test(m)?`The link answered with an error (${m}). Check the deployment is set to “Anyone” and the link ends in /exec.`:m=='html'?'The link returned a web page instead of data. The script may have an error, or needs Deploy › Manage deployments › New version.':m=='other'?'That sheet belongs to another app (such as Zhou Menu). Make a separate deployment for Leafy.':'Couldn’t reach that link. Check your connection, that the deployment is set to “Anyone”, and that the script has no errors.'}
+async function remote(u,init){const r=await fetch(u,init);if(!r.ok)throw new Error('HTTP '+r.status);const t=await r.text();try{return JSON.parse(t)}catch(e){throw new Error('html')}}
+let busy=false,again=false,syncErr='';
+async function pull(){
+ if(!meta.url){st('none');return}
+ if(busy){again=true;return}
+ busy=true;st('sync');let ok=false;
  try{
-  for(let n=0;n<3;n++){
-   const r=await(await fetch(meta.url+(meta.url.includes('?')?'&':'?')+'app=leafy&t='+Date.now())).json();
-   if(!r.ok)throw 0;
-   const m=r.data?merge(state(),r.data):state();migrate(m.plants);plants=m.plants;meta.tomb=m.tomb;meta.ltomb=m.ltomb;
-   const res=await(await fetch(meta.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({app:'leafy',op:'put',rev:r.rev,data:state()})})).json();
-   if(res.ok){meta.rev=res.rev;meta.last=Date.now();saveLocal();render();ssay('Synced '+tm());dot('ok');syncing=false;return}
-  }
-  ssay('Busy, try again in a moment.');dot('err')
- }catch(e){ssay('Couldn’t reach the sheet. Will retry later.');dot('err')}
- syncing=false}
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync(false)});
+  const u=meta.url,sep=u.includes('?')?'&':'?';
+  let r=await remote(u+sep+'app=leafy&t='+Date.now(),{cache:'no-store'});
+  for(let n=0;n<4&&!ok;n++){
+   if(r&&!Array.isArray(r.plants))throw new Error('other');
+   const m=r?merge(state(),r):state();migrate(m.plants);
+   const changed=canon(m)!==canon(state());plants=m.plants;meta.tomb=m.tomb;meta.ltomb=m.ltomb;if(changed){saveLocal();render()}
+   if(r&&canon(m)===canon(r)){ok=true;break}
+   const res=await remote(u,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...state(),_rev:r?(r._rev||0):0})});
+   if(res&&res._conflict){r=res;continue}
+   ok=true}
+  if(!ok)throw new Error('busy');
+  meta.last=Date.now();saveLocal();syncErr='';st('ok')
+ }catch(e){syncErr=e.message;st('off')}
+ busy=false;if(again){again=false;sched()}}
+let sT;function sched(){if(!meta.url)return;st('sync');clearTimeout(sT);sT=setTimeout(pull,700)}
+setInterval(()=>{document.visibilityState=='visible'&&pull()},15000);
+document.addEventListener('visibilitychange',()=>document.visibilityState=='visible'&&pull());addEventListener('online',pull);
+function syncUI(){st(meta.url?(dotEl.dataset.s=='none'?'ok':dotEl.dataset.s):'none');$('#surl').value=meta.url||'';$('#invite').style.display=$('#disc').style.display=meta.url?'':'none';$('#syw').classList.toggle('open',!meta.url)}
+$('#syb').onclick=()=>$('#syw').classList.toggle('open');
+$('#connect').onclick=async()=>{const u=$('#surl').value.trim();if(!u)return;ssay('Connecting…');meta.url=u;saveLocal();await pull();if(dotEl.dataset.s=='ok'){ssay('Connected.');syncUI()}else ssay(explain(syncErr))};
+$('#invite').onclick=async()=>{const l=location.origin+location.pathname+'#sync='+encodeURIComponent(meta.url);try{await navigator.clipboard.writeText(l);ssay('Invite link copied.')}catch(e){ssay(l)}};
+$('#disc').onclick=()=>{meta.url='';saveLocal();st('none');syncUI();ssay('Sync turned off.')};
+{const m=location.hash.match(/^#sync=(.+)/);if(m){try{meta.url=decodeURIComponent(m[1]);saveLocal()}catch(e){}history.replaceState(null,'',location.pathname+location.search)}}
 
 /* ---------- backup / restore ---------- */
-$('#bk').onclick=()=>{const b=new Blob([JSON.stringify({app:'leafy',exported:new Date().toISOString(),...state()},null,1)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='leafy-backup-'+today()+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);ssay('Backup saved.')};
+$('#bk').onclick=()=>{const b=new Blob([JSON.stringify({app:'leafy',exported:new Date().toISOString(),...state()},null,1)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='leafy-backup-'+today()+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);meta.bk=Date.now();saveLocal();bki();ssay('Backup saved.')};
 $('#rs').onclick=()=>$('#rf').click();
 $('#rf').onchange=async e=>{const f=e.target.files[0];if(!f)return;
  try{const o=JSON.parse(await f.text());if(!Array.isArray(o.plants))throw 0;if(!await confirmBox('Restore backup?','This replaces everything in the app with the backup.','Restore',true))return;
@@ -457,22 +480,21 @@ $('#rf').onchange=async e=>{const f=e.target.files[0];if(!f)return;
   migrate(o.plants);o.plants.forEach(p=>p.u=Date.now());plants=o.plants;meta.tomb=mx(meta.tomb,o.tomb||{});meta.ltomb=mx(meta.ltomb,o.ltomb||{});
   commit();render();ssay('Restored '+plants.length+' plants.')}catch(x){ssay('That isn’t a Leafy backup.')}e.target.value=''};
 
+const bki=()=>{$('#bki').textContent=meta.bk?'Last backup: '+new Date(meta.bk).toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'}):'No backup yet.'};
 /* ---------- What's new pop-up (hold the version number) ---------- */
 const wn=$('#wn');let ready=false,hold;
 const clr=()=>{try{getSelection().removeAllRanges()}catch(e){}};
-function openWn(){clr();$('#rel').textContent='v3.5.0 · '+new Date(REL+'T00:00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'});$('#surl').value=meta.url||'';seaUI();ssay(meta.last?'Last synced '+new Date(meta.last).toLocaleString([],{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}):'');
+function openWn(){clr();$('#rel').textContent='Version 3.6.0 · released '+new Date(REL+'T00:00:00').toLocaleDateString(undefined,{day:'numeric',month:'long',year:'numeric'});syncUI();ssay('');bki();seaUI();
  ready=false;wn.classList.add('on','fresh');setTimeout(()=>{wn.classList.remove('fresh');ready=true;clr()},700)}
 document.addEventListener('selectionchange',()=>{if(wn.classList.contains('on')&&!ready)clr()});
 wn.addEventListener('click',e=>{if(ready&&e.target===wn)wn.classList.remove('on')});
-const v=$('#ver');
-v.addEventListener('pointerdown',()=>{hold=setTimeout(openWn,550)});
-['pointerup','pointerleave','pointercancel'].forEach(e=>v.addEventListener(e,()=>clearTimeout(hold)));
-v.addEventListener('contextmenu',e=>e.preventDefault());
+const v=$('#ver');let vs=null;const vc=()=>{clearTimeout(hold);v.classList.remove('hold')};
+v.addEventListener('pointerdown',e=>{vs=[e.clientX,e.clientY];v.classList.add('hold');hold=setTimeout(()=>{v.classList.remove('hold');buzz(15);openWn()},700)});
+['pointerup','pointercancel','pointerleave'].forEach(t=>v.addEventListener(t,vc));
+v.addEventListener('pointermove',e=>{if(vs&&Math.hypot(e.clientX-vs[0],e.clientY-vs[1])>12)vc()});v.addEventListener('contextmenu',e=>e.preventDefault());
 function seaUI(){$('#sea').checked=meta.sea!==false;$('#hS').classList.toggle('on',meta.hemi!='N');$('#hN').classList.toggle('on',meta.hemi=='N');const s=season(dn(today()));$('#seaTxt').textContent=meta.sea!==false?`Now: ${s} · intervals ×${SEAS[s]}`:'Seasonal adjustment is off.'}
 $('#sea').onchange=()=>{meta.sea=$('#sea').checked;saveLocal();render();seaUI()};
 $('#hS').onclick=()=>{meta.hemi='S';saveLocal();render();seaUI()};$('#hN').onclick=()=>{meta.hemi='N';saveLocal();render();seaUI()};
-$('#ssv').onclick=()=>{meta.url=$('#surl').value.trim();saveLocal();sync(true)};
-$('#snw').onclick=()=>sync(true);
 
 /* ---------- theme ---------- */
 const MOON='<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
@@ -484,7 +506,7 @@ $('#thm').onclick=()=>{const n=isDark()?'light':'dark';document.documentElement.
 
 /* ---------- start ---------- */
 if(migrate(plants))saveLocal();
-paint();render();dot();sync(false);
+paint();render();st(meta.url?'sync':'none');pull();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
